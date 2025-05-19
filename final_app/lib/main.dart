@@ -1,5 +1,10 @@
 import 'dart:async';
 
+import 'package:final_app/Favorites.dart';
+import 'package:final_app/cart.dart';
+import 'package:final_app/catagory.dart';
+import 'package:final_app/home.dart';
+import 'package:final_app/profile.dart';
 import 'package:flutter/material.dart';
 
 void main() {
@@ -38,7 +43,7 @@ class _SplashScreenState extends State<SplashScreen> {
     Timer(Duration(seconds: 1), () {
       Navigator.pushReplacement(
         context,
-        MaterialPageRoute(builder: (context) => HomeScreen()),
+        MaterialPageRoute(builder: (context) => TabbarScreen()),
       );
     });
   }
@@ -51,14 +56,14 @@ class _SplashScreenState extends State<SplashScreen> {
   }
 }
 
-class HomeScreen extends StatefulWidget {
-  const HomeScreen({super.key});
+class TabbarScreen extends StatefulWidget {
+  const TabbarScreen({super.key});
 
   @override
-  State<HomeScreen> createState() => _HomeScreenState();
+  State<TabbarScreen> createState() => _TabbarScreenState();
 }
 
-class _HomeScreenState extends State<HomeScreen> {
+class _TabbarScreenState extends State<TabbarScreen> {
   @override
   Widget build(BuildContext context) {
     return DefaultTabController(
@@ -85,72 +90,4 @@ class _HomeScreenState extends State<HomeScreen> {
   }
 }
 
-class Home extends StatefulWidget {
-  const Home({super.key});
 
-  @override
-  State<Home> createState() => _HomeState();
-}
-
-class _HomeState extends State<Home> {
-  @override
-  Widget build(BuildContext context) {
-    return const Placeholder();
-  }
-}
-
-class Catalog extends StatefulWidget {
-  const Catalog({super.key});
-
-  @override
-  State<Catalog> createState() => _CatalogState();
-}
-
-class _CatalogState extends State<Catalog> {
-  @override
-  Widget build(BuildContext context) {
-    return const Placeholder();
-  }
-}
-
-class Cart extends StatefulWidget {
-  const Cart({super.key});
-
-  @override
-  State<Cart> createState() => _CartState();
-}
-
-class _CartState extends State<Cart> {
-  @override
-  Widget build(BuildContext context) {
-    return const Placeholder();
-  }
-}
-
-class Favorites extends StatefulWidget {
-  const Favorites({super.key});
-
-  @override
-  State<Favorites> createState() => _FavoritesState();
-}
-
-class _FavoritesState extends State<Favorites> {
-  @override
-  Widget build(BuildContext context) {
-    return const Placeholder();
-  }
-}
-
-class Profile extends StatefulWidget {
-  const Profile({super.key});
-
-  @override
-  State<Profile> createState() => _ProfileState();
-}
-
-class _ProfileState extends State<Profile> {
-  @override
-  Widget build(BuildContext context) {
-    return const Placeholder();
-  }
-}
