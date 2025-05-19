@@ -1,3 +1,4 @@
+import 'package:final_app/catagory.dart';
 import 'package:flutter/material.dart';
 
 class Home extends StatefulWidget {
@@ -8,8 +9,90 @@ class Home extends StatefulWidget {
 }
 
 class _HomeState extends State<Home> {
+  List Categories = [
+    {"name": "Mobiles", "image": "assets/image/mobile.jpg"},
+    {"name": "Laptops", "image": "assets/image/laptops.jpg"},
+    {"name": "Smart Watches", "image": "assets/image/smartwatch.jpg"},
+    {"name": "Cameras", "image": "assets/image/camera.jpg"},
+    {"name": "Consoles", "image": "assets/image/console.jpg"},
+    {"name": "Earphones", "image": "assets/image/earphone.jpg"},
+    {"name": "Airbuds", "image": "assets/image/airbuds.jpg"},
+    {"name": "Chargers", "image": "assets/image/charger.jpg"},
+  ];
   @override
   Widget build(BuildContext context) {
-    return const Placeholder();
+    return Scaffold(
+      appBar: AppBar(
+        title: Center(
+          child: Text(
+            "Electronic items App",
+            style: TextStyle(fontWeight: FontWeight.bold),
+          ),
+        ),
+      ),
+      body: Column(
+        children: [
+          TextField(
+            decoration: InputDecoration(
+              hintText: "Search for products...",
+              suffixIcon: Icon(Icons.search),
+              border: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(10),
+              ),
+            ),
+          ),
+          const SizedBox(height: 20),
+
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 16.0),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                const Text(
+                  "Categories",
+                  style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+                ),
+                TextButton(
+                  onPressed: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(builder: (context) => Catalog()),
+                    );
+                  },
+                  child: const Text("See All"),
+                ),
+              ],
+            ),
+          ),
+          SizedBox(
+            height: 100,
+            child: ListView.builder(
+              scrollDirection: Axis.horizontal,
+              itemCount: Categories.length,
+              itemBuilder: (context, index) {
+                final category = Categories[index];
+                return Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 8),
+                  child: Column(
+                    children: [
+                      ClipOval(
+                        child: Image.asset(
+                          category['image'],
+                          width: 60,
+                          height: 60,
+                          fit: BoxFit.cover,
+                        ),
+                      ),
+                      const SizedBox(height: 6),
+                      Text(category['name']),
+                    ],
+                  ),
+                );
+              },
+            ),
+          ),
+        ],
+      ),
+    );
   }
 }
