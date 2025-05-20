@@ -1,4 +1,14 @@
 import 'package:final_app/catagory.dart';
+import 'package:final_app/catogory/airbuds.dart';
+import 'package:final_app/catogory/cameras.dart';
+import 'package:final_app/catogory/chargers.dart';
+import 'package:final_app/catogory/consoles.dart';
+import 'package:final_app/catogory/earphones.dart';
+import 'package:final_app/catogory/laptops.dart';
+import 'package:final_app/catogory/mobile.dart';
+import 'package:final_app/catogory/powerbank.dart';
+import 'package:final_app/catogory/smartwatches.dart';
+import 'package:final_app/catogory/tablets.dart';
 import 'package:flutter/material.dart';
 
 class Home extends StatefulWidget {
@@ -9,7 +19,7 @@ class Home extends StatefulWidget {
 }
 
 class _HomeState extends State<Home> {
-  List Categories = [
+  List electornicItem = [
     {"name": "Mobiles", "image": "assets/image/mobile.jpg"},
     {"name": "Laptops", "image": "assets/image/laptops.jpg"},
     {"name": "Smart Watches", "image": "assets/image/smartwatch.jpg"},
@@ -20,8 +30,21 @@ class _HomeState extends State<Home> {
     {"name": "Chargers", "image": "assets/image/charger.jpg"},
     {"name": "Tablets", "image": "assets/image/tablet.jpg"},
     {"name": "Powerbanks", "image": "assets/image/powerbank.jpg"},
-
   ];
+
+  Map itemList = {
+    "Mobiles": mobiles(),
+    "Laptops": laptops(),
+    "Smart Watches": smartWatches(),
+    "Cameras": cameras(),
+    "Consoles": consoles(),
+    "Earphones": earphones(),
+    "Airbuds": airbuds(),
+    "Chargers": chargers(),
+    "Tablets": tablets(),
+    "Powerbanks": powerbanks(),
+  };
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -34,7 +57,7 @@ class _HomeState extends State<Home> {
         ),
       ),
       body: Column(
-        children: [
+        children: <Widget>[
           TextField(
             decoration: InputDecoration(
               hintText: "Search for products...",
@@ -67,28 +90,41 @@ class _HomeState extends State<Home> {
               ],
             ),
           ),
+
           SizedBox(
             height: 100,
             child: ListView.builder(
               scrollDirection: Axis.horizontal,
-              itemCount: Categories.length,
+              itemCount: electornicItem.length,
+
               itemBuilder: (context, index) {
-                final category = Categories[index];
-                return Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 8),
-                  child: Column(
-                    children: [
-                      ClipOval(
-                        child: Image.asset(
-                          category['image'],
-                          width: 60,
-                          height: 60,
-                          fit: BoxFit.cover,
+                var categorySCR = electornicItem[index]["name"];
+                var selectedSCR = itemList[categorySCR];
+
+                var category = electornicItem[index];
+                return GestureDetector(
+                  onTap: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(builder: (context) => selectedSCR),
+                    );
+                  },
+                  child: Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 8),
+                    child: Column(
+                      children: [
+                        ClipOval(
+                          child: Image.asset(
+                            category['image'],
+                            width: 60,
+                            height: 60,
+                            fit: BoxFit.cover,
+                          ),
                         ),
-                      ),
-                      const SizedBox(height: 6),
-                      Text(category['name']),
-                    ],
+                        const SizedBox(height: 6),
+                        Text(category['name']),
+                      ],
+                    ),
                   ),
                 );
               },
