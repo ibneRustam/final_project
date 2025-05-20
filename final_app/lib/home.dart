@@ -18,6 +18,9 @@ class _HomeState extends State<Home> {
     {"name": "Earphones", "image": "assets/image/earphone.jpg"},
     {"name": "Airbuds", "image": "assets/image/airbuds.jpg"},
     {"name": "Chargers", "image": "assets/image/charger.jpg"},
+    {"name": "Tablets", "image": "assets/image/tablet.jpg"},
+    {"name": "Powerbanks", "image": "assets/image/powerbank.jpg"},
+
   ];
   @override
   Widget build(BuildContext context) {
