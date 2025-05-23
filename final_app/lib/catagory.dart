@@ -1,13 +1,8 @@
-import 'package:final_app/catogory/airbuds.dart';
-import 'package:final_app/catogory/cameras.dart';
-import 'package:final_app/catogory/chargers.dart';
-import 'package:final_app/catogory/consoles.dart';
-import 'package:final_app/catogory/earphones.dart';
-import 'package:final_app/catogory/laptops.dart';
-import 'package:final_app/catogory/mobile.dart';
-import 'package:final_app/catogory/powerbank.dart';
-import 'package:final_app/catogory/smartwatches.dart';
-import 'package:final_app/catogory/tablets.dart';
+
+import 'package:final_app/item/camera.dart';
+import 'package:final_app/item/laptop.dart';
+import 'package:final_app/item/mobile.dart';
+import 'package:final_app/item/smartwatch.dart';
 import 'package:flutter/material.dart';
 
 class Catalog extends StatefulWidget {
@@ -19,7 +14,7 @@ class Catalog extends StatefulWidget {
 
 class _CatalogState extends State<Catalog> {
   List electornicItem = [
-    {"name": "Mobiles", "image": "assets/image/mobile.jpg"},
+    {"name": "Mobiles", "image": "assets/image/mobileee.webp"},
     {"name": "Laptops", "image": "assets/image/laptops.jpg"},
     {"name": "Smart Watches", "image": "assets/image/smartwatch.jpg"},
     {"name": "Cameras", "image": "assets/image/camera.jpg"},
@@ -32,16 +27,16 @@ class _CatalogState extends State<Catalog> {
   ];
 
   Map itemList = {
-    "Mobiles": mobiles(),
+    "Mobiles": Mobiles(),
     "Laptops": laptops(),
     "Smart Watches": smartWatches(),
     "Cameras": cameras(),
-    "Consoles": consoles(),
-    "Earphones": earphones(),
-    "Airbuds": airbuds(),
-    "Chargers": chargers(),
-    "Tablets": tablets(),
-    "Powerbanks": powerbanks(),
+    // "Consoles": consoles(),
+    // "Earphones": earphones(),
+    // "Airbuds": airbuds(),
+    // "Chargers": chargers(),
+    // "Tablets": tablets(),
+    // "Powerbanks": powerbanks(),
   };
   @override
   Widget build(BuildContext context) {
