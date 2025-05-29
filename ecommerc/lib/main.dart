@@ -1,7 +1,7 @@
 import 'dart:async';
-import 'package:ecommerce/screen/cart.dart';
+import 'dart:ui' show ImageFilter;
+import 'package:ecommerce/screen/CartScreen.dart';
 import 'package:ecommerce/screen/catlog.dart';
-import 'package:ecommerce/screen/fav.dart';
 import 'package:ecommerce/screen/home.dart';
 import 'package:ecommerce/screen/profile.dart';
 import 'package:flutter/material.dart';
@@ -57,6 +57,8 @@ class _SplashScreenState extends State<SplashScreen> {
   }
 }
 
+
+
 class TabbarScreen extends StatefulWidget {
   const TabbarScreen({super.key});
 
@@ -69,11 +71,11 @@ class _TabbarScreenState extends State<TabbarScreen> {
   late PageController _pageController;
 
   final List<Widget> _pages = [
-    HomeScreen(),
-    Catalog(),
-   Cart(),
-    Favorites(),
-    LoginScreen(),
+    const HomeScreen(),
+    const Catalog(),
+    const Card(),
+    // const Favorites(),
+    const LoginScreen(),
   ];
 
   @override
@@ -94,71 +96,90 @@ class _TabbarScreenState extends State<TabbarScreen> {
     });
     _pageController.animateToPage(
       index,
-      duration: const Duration(milliseconds: 300),
-      curve: Curves.easeInOut,
+      duration: const Duration(milliseconds: 350),
+      curve: Curves.easeInOutCubic,
     );
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: const Text("Electronic App")),
+      extendBody: true,
+      appBar: AppBar(
+        elevation: 6,
+        centerTitle: true,
+        title: const Text(
+          "Electronic App",
+          style: TextStyle(
+            fontWeight: FontWeight.bold,
+            color: Colors.white,
+            fontSize: 22,
+          ),
+        ),
+        flexibleSpace: Container(
+          decoration: const BoxDecoration(
+            gradient: LinearGradient(
+              colors: [Color(0xFF26A69A), Color(0xFF66BB6A)],
+              begin: Alignment.topLeft,
+              end: Alignment.bottomRight,
+            ),
+          ),
+        ),
+      ),
       body: PageView(
         controller: _pageController,
         physics: const NeverScrollableScrollPhysics(),
         children: _pages,
       ),
       bottomNavigationBar: Container(
+        margin: const EdgeInsets.only(left: 16, right: 16, bottom: 12),
         decoration: BoxDecoration(
-          color:
-              Theme.of(context).bottomAppBarTheme.color ??
-              Theme.of(context).colorScheme.surface,
+          borderRadius: BorderRadius.circular(25),
           boxShadow: const [
             BoxShadow(
               color: Colors.black26,
-              blurRadius: 10,
-              offset: Offset(0, -2),
+              blurRadius: 12,
+              offset: Offset(0, 6),
             ),
           ],
-          borderRadius: const BorderRadius.only(
-            topLeft: Radius.circular(25),
-            topRight: Radius.circular(25),
-          ),
         ),
         child: ClipRRect(
-          borderRadius: const BorderRadius.only(
-            topLeft: Radius.circular(25),
-            topRight: Radius.circular(25),
-          ),
-          child: BottomNavigationBar(
-            currentIndex: _currentIndex,
-            onTap: _onTabTapped,
-            selectedItemColor: Colors.deepPurple,
-            unselectedItemColor: Colors.grey,
-            showUnselectedLabels: true,
-            type: BottomNavigationBarType.fixed,
-            items: const [
-              BottomNavigationBarItem(
-                icon: Icon(Icons.home_outlined),
-                label: 'Home',
-              ),
-              BottomNavigationBarItem(
-                icon: Icon(Icons.category_outlined),
-                label: 'Catalog',
-              ),
-              BottomNavigationBarItem(
-                icon: Icon(Icons.shopping_cart_outlined),
-                label: 'Cart',
-              ),
-              BottomNavigationBarItem(
-                icon: Icon(Icons.favorite_border),
-                label: 'Favorites',
-              ),
-              BottomNavigationBarItem(
-                icon: Icon(Icons.person_outline),
-                label: 'Profile',
-              ),
-            ],
+          borderRadius: BorderRadius.circular(25),
+          child: BackdropFilter(
+            filter: ImageFilter.blur(sigmaX: 10, sigmaY: 10),
+            child: BottomNavigationBar(
+              currentIndex: _currentIndex,
+              onTap: _onTabTapped,
+              backgroundColor: Colors.white.withOpacity(0.85),
+              selectedItemColor: Colors.green.shade600,
+              unselectedItemColor: Colors.grey.shade600,
+              showUnselectedLabels: true,
+              type: BottomNavigationBarType.fixed,
+              selectedFontSize: 12,
+              unselectedFontSize: 11,
+              items: const [
+                BottomNavigationBarItem(
+                  icon: Icon(Icons.home_outlined, size: 26),
+                  label: 'Home',
+                ),
+                BottomNavigationBarItem(
+                  icon: Icon(Icons.category_outlined, size: 26),
+                  label: 'Catalog',
+                ),
+                BottomNavigationBarItem(
+                  icon: Icon(Icons.shopping_cart_outlined, size: 26),
+                  label: 'Cart',
+                ),
+                // BottomNavigationBarItem(
+                //   icon: Icon(Icons.favorite_border, size: 26),
+                //   label: 'Favorites',
+                // ),
+                BottomNavigationBarItem(
+                  icon: Icon(Icons.person_outline, size: 26),
+                  label: 'Profile',
+                ),
+              ],
+            ),
           ),
         ),
       ),

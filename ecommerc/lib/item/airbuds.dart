@@ -1,85 +1,107 @@
 import 'package:ecommerce/class/model.dart';
 import 'package:ecommerce/item/mobile.dart';
 import 'package:ecommerce/screen/productdetail.dart';
-
 import 'package:flutter/material.dart';
 
-class laptops extends StatefulWidget {
-  const laptops({super.key});
+class airbuds extends StatefulWidget {
+  const airbuds({super.key});
 
   @override
-  State<laptops> createState() => _laptopsState();
+  State<airbuds> createState() => _airbudsState();
 }
 
-class _laptopsState extends State<laptops> {
+class _airbudsState extends State<airbuds> {
   final themeColor = Colors.green.shade300;
 
-  List<Product> laptop = [
+  List<Product> airpods = [
     Product(
       1,
-      'laptop 1',
+      'Airpods 1',
       'Latest model with high performance',
       12000,
-      "assets/image/lap1.jpg",
+      "assets/image/airbird1.webp",
     ),
 
     Product(
       2,
-      'laptop 2',
+      'Airpods 2',
       'Latest model with high performance',
       12000,
-      "assets/image/lap2.jpg",
+      "assets/image/airbird2.webp",
     ),
 
     Product(
       3,
-      'laptop 3',
+      'Airpods 3',
       'Latest model with high performance',
       12000,
-      "assets/image/lap3.jpg",
+      "assets/image/airbird3.webp",
     ),
 
     Product(
       4,
-      'laptop 4',
+      'Airpods 4',
       'Latest model with high performance',
       12000,
-      "assets/image/lap1.jpg",
+      "assets/image/airbird4.webp",
     ),
 
     Product(
       5,
-      'laptop 5',
+      'Airpods 5',
       'Latest model with high performance',
       12000,
-      "assets/image/lap2.jpg",
+      "assets/image/airbird5.webp",
     ),
 
     Product(
       6,
-      'laptop 6',
+      'Airpods 6',
       'Latest model with high performance',
       12000,
-      "assets/image/lap3.jpg",
+      "assets/image/airbird6.webp",
     ),
 
     Product(
       7,
-      'laptop 7',
+      'Airpods 7',
       'Latest model with high performance',
       12000,
-      "assets/image/lap1.jpg",
+      "assets/image/airbird7.webp",
+    ),
+
+    Product(
+      8,
+      'Airpods 8',
+      'Latest model with high performance',
+      12000,
+      "assets/image/airbird8.webp",
+    ),
+
+    Product(
+      9,
+      'Airpods 9',
+      'Latest model with high performance',
+      12000,
+      "assets/image/airbird9.webp",
+    ),
+    Product(
+      10,
+      'Airpods 10',
+      'Latest model with high performance',
+      12000,
+      "assets/image/airbird10.webp",
     ),
   ];
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Center(child: Text("Smart Watch"))),
+      appBar: AppBar(title: Center(child: Text("Air pods"))),
       body: GridView.builder(
         physics: const NeverScrollableScrollPhysics(),
         shrinkWrap: true,
-        itemCount: laptop.length,
+        itemCount: airpods.length,
         gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
           crossAxisCount: 2,
           mainAxisSpacing: 16,
@@ -87,7 +109,7 @@ class _laptopsState extends State<laptops> {
           childAspectRatio: 0.7,
         ),
         itemBuilder: (_, index) {
-          final product = laptop[index];
+          final product = airpods[index];
           return GestureDetector(
             onTap:
                 () => Navigator.push(
