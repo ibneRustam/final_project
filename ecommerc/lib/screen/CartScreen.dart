@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:url_launcher/url_launcher.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'cartmanager.dart';
+import 'login.dart'; 
 
 class CartScreen extends StatefulWidget {
   const CartScreen({super.key});
@@ -19,8 +21,29 @@ class _CartScreenState extends State<CartScreen> {
       await launchUrl(whatsappUrl, mode: LaunchMode.externalApplication);
     } else {
       ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('Could not open WhatsApp')),
+        const SnackBar(content: Text('WhatsApp not open ')),
       );
+    }
+  }
+
+  void _handleCheckout() {
+    final user = FirebaseAuth.instance.currentUser;
+
+    if (user == null) {
+      
+      Navigator.push(
+        context,
+        MaterialPageRoute(builder: (_) => const LoginScreen()),
+      );
+    } else {
+      // ✅ اگر login ہے تو WhatsApp کھولیں
+      final message = StringBuffer();
+      for (var item in cart.cartItems) {
+        message.writeln("${item.product.name} x${item.quantity} - Rs ${item.product.price * item.quantity}");
+      }
+      message.writeln("\nTotal: Rs ${cart.totalPrice.toStringAsFixed(2)}");
+
+      openWhatsApp('923412057527', "Hello, I want to order these items:\n\n$message");
     }
   }
 
@@ -98,19 +121,7 @@ class _CartScreenState extends State<CartScreen> {
                         width: double.infinity,
                         child: ElevatedButton(
                           style: ElevatedButton.styleFrom(backgroundColor: themeColor),
-                          onPressed: () {
-                            
-                            final message = StringBuffer();
-                            for (var item in cartItems) {
-                              message.writeln("${item.product.name} x${item.quantity} - Rs ${item.product.price * item.quantity}");
-                            }
-                            message.writeln("\nTotal: Rs ${cart.totalPrice.toStringAsFixed(2)}");
-
-                            openWhatsApp(
-                              '923412057527',
-                              "Hello, I want to order these items:\n\n${message.toString()}",
-                            );
-                          },
+                          onPressed: _handleCheckout,
                           child: const Text("Checkout"),
                         ),
                       ),

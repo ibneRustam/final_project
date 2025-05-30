@@ -1,14 +1,12 @@
 import 'dart:async';
 import 'dart:ui' show ImageFilter;
 import 'package:ecommerce/firebase_options.dart';
-import 'package:ecommerce/screen/CartScreen.dart';
 import 'package:ecommerce/screen/catlog.dart';
 import 'package:ecommerce/screen/home.dart';
-import 'package:ecommerce/screen/profile.dart';
+import 'package:ecommerce/screen/login.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/material.dart';
-import 'package:firebase_core/firebase_core.dart';
+
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
