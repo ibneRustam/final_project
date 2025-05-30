@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:url_launcher/url_launcher.dart';
 import 'cartmanager.dart';
 
 class CartScreen extends StatefulWidget {
@@ -10,6 +11,18 @@ class CartScreen extends StatefulWidget {
 
 class _CartScreenState extends State<CartScreen> {
   final cart = CartManager();
+
+  void openWhatsApp(String phone, String message) async {
+    final whatsappUrl = Uri.parse("https://wa.me/$phone?text=${Uri.encodeComponent(message)}");
+
+    if (await canLaunchUrl(whatsappUrl)) {
+      await launchUrl(whatsappUrl, mode: LaunchMode.externalApplication);
+    } else {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text('Could not open WhatsApp')),
+      );
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -86,9 +99,16 @@ class _CartScreenState extends State<CartScreen> {
                         child: ElevatedButton(
                           style: ElevatedButton.styleFrom(backgroundColor: themeColor),
                           onPressed: () {
-                            // Handle checkout here
-                            ScaffoldMessenger.of(context).showSnackBar(
-                              const SnackBar(content: Text("Proceeding to Checkout...")),
+                            
+                            final message = StringBuffer();
+                            for (var item in cartItems) {
+                              message.writeln("${item.product.name} x${item.quantity} - Rs ${item.product.price * item.quantity}");
+                            }
+                            message.writeln("\nTotal: Rs ${cart.totalPrice.toStringAsFixed(2)}");
+
+                            openWhatsApp(
+                              '923412057527',
+                              "Hello, I want to order these items:\n\n${message.toString()}",
                             );
                           },
                           child: const Text("Checkout"),

@@ -16,17 +16,17 @@ class Catalog extends StatefulWidget {
 
 class _CatalogState extends State<Catalog> {
   List electornicItem = [
-    {"name": "Mobiles", "image": "assets/image/mobile.jpg"},
-    {"name": "Laptops", "image": "assets/image/laptops.jpg"},
-    {"name": "Smart Watches", "image": "assets/image/smartwatch.jpg"},
+    {"name": "Mobiles", "image": "assets/image/mobileee.webp"},
+    {"name": "Laptops", "image": "assets/image/lap1.jpg"},
+    {"name": "Smart Watches", "image": "assets/image/watch1.webp"},
     {"name": "Airbuds", "image": "assets/image/airbird3.webp"},
-    {"name": "Accessories", "image": "assets/image/charger.jpg"},
+    {"name": "Accessories", "image": "assets/image/acc1.jpg"},
     {"name": "Tablets", "image": "assets/image/tablet.jpg"},
   ];
 
   Map itemList = {
     "Mobiles": Mobiles(),
-    "Laptops": laptops(),
+    "Laptops": Laptops(),
     "Smart Watches": smartWatches(),
     "Airbuds": airbuds(),
     "Accessories": Accessories (),
