@@ -1,4 +1,3 @@
-
 import 'package:ecommerce/item/accessories.dart';
 import 'package:ecommerce/item/airbuds.dart';
 import 'package:ecommerce/item/laptop.dart';
@@ -29,46 +28,98 @@ class _CatalogState extends State<Catalog> {
     "Laptops": Laptops(),
     "Smart Watches": smartWatches(),
     "Airbuds": airbuds(),
-    "Accessories": Accessories (),
+    "Accessories": Accessories(),
     "Tablets": tablet(),
   };
+
+  Color primaryColor = const Color(0xff134e5e);
+  Color secondaryColor = const Color(0xff71b280);
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Center(child: Text("Catagories"))),
-      body: GridView.builder(
-        itemCount: electornicItem.length,
-        gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-          crossAxisCount: 2,
-        ),
-        itemBuilder: (context, index) {
-          var categorySCR = electornicItem[index]["name"];
-          var selectedSCR = itemList[categorySCR];
-          return GestureDetector(
-            onTap: () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(builder: (context) => selectedSCR),
-              );
-            },
-            child: Card(
-              child: Column(
-                children: [
-                  Center(
-                    child: Image.asset(
-                      electornicItem[index]["image"],
-                      height: 100,
-                      width: 100,
-                    ),
-                  ),
-                  SizedBox(height: 50),
-                  Center(child: Text(electornicItem[index]["name"])),
-                ],
-              ),
-            ),
+      appBar: AppBar(
+        title: const Center(child: Text("Categories")),
+        backgroundColor: primaryColor,
+        elevation: 0,
+      ),
+      body: Container(
+  decoration: BoxDecoration(
+    gradient: LinearGradient(
+      colors: [primaryColor.withOpacity(0.9), secondaryColor.withOpacity(0.9)],
+      begin: Alignment.topLeft,
+      end: Alignment.bottomRight,
+    ),
+  ),
+  padding: const EdgeInsets.all(12),
+  child: GridView.builder(
+    itemCount: electornicItem.length,
+    gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+      crossAxisCount: 2,
+      mainAxisSpacing: 15,
+      crossAxisSpacing: 15,
+      childAspectRatio: 3 / 4,
+    ),
+    itemBuilder: (context, index) {
+      var categoryName = electornicItem[index]["name"];
+      var selectedScreen = itemList[categoryName];
+
+      return GestureDetector(
+        onTap: () {
+          Navigator.push(
+            context,
+            MaterialPageRoute(builder: (context) => selectedScreen),
           );
         },
-      ),
+        child: Container(
+          decoration: BoxDecoration(
+            color: Colors.white, // کارڈ کا رنگ سفید
+            borderRadius: BorderRadius.circular(20),
+            boxShadow: [
+              BoxShadow(
+                color: Colors.black26,
+                blurRadius: 6,
+                offset: const Offset(0, 4),
+              ),
+            ],
+          ),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Expanded(
+                flex: 3,
+                child: Padding(
+                  padding: const EdgeInsets.all(16.0),
+                  child: Image.asset(
+                    electornicItem[index]["image"],
+                    fit: BoxFit.contain,
+                  ),
+                ),
+              ),
+              Expanded(
+                flex: 1,
+                child: Center(
+                  child: Text(
+                    categoryName,
+                    style: TextStyle(
+                      color: primaryColor,
+                      fontWeight: FontWeight.bold,
+                      fontSize: 18,
+                    ),
+                    textAlign: TextAlign.center,
+                  ),
+                ),
+              ),
+              const SizedBox(height: 12),
+            ],
+          ),
+        ),
+      );
+    },
+  ),
+),
+
+
     );
   }
 }

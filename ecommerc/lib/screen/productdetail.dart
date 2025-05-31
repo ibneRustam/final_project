@@ -1,9 +1,7 @@
 import 'package:ecommerce/class/model.dart';
 import 'package:ecommerce/screen/CartScreen.dart';
 import 'package:ecommerce/screen/cartmanager.dart';
- // Make sure correct file
 import 'package:flutter/material.dart';
-import 'package:ecommerce/screen/home.dart'; // for Product model
 
 class ProductDetail extends StatelessWidget {
   final Product product;
@@ -25,38 +23,96 @@ class ProductDetail extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final themeColor = Colors.green.shade300;
+    final theme = Theme.of(context);
 
     return Scaffold(
-      appBar: AppBar(title: Text(product.name), backgroundColor: themeColor),
-      body: Padding(
-        padding: const EdgeInsets.all(16),
+      appBar: AppBar(
+        title: Text(product.name),
+        backgroundColor: theme.colorScheme.primary,
+        elevation: 1,
+      ),
+      body: SingleChildScrollView(
+        padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 24),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Center(child: Image.asset(product.imageUrl, height: 200)),
-            const SizedBox(height: 16),
-            Text(product.name,
-                style: const TextStyle(fontSize: 24, fontWeight: FontWeight.bold)),
-            const SizedBox(height: 8),
-            Text(product.description, style: const TextStyle(fontSize: 16)),
-            const SizedBox(height: 8),
-            Text('Rs ${product.price.toStringAsFixed(2)}',
-                style: TextStyle(
-                    fontSize: 20,
-                    color: themeColor,
-                    fontWeight: FontWeight.bold)),
-            const Spacer(),
-            SizedBox(
-              width: double.infinity,
-              height: 48,
-              child: ElevatedButton(
-                style: ElevatedButton.styleFrom(backgroundColor: themeColor),
-                onPressed: () => _addToCart(context), 
-                child: const Text("Add to Cart"),
+            Center(
+              child: Container(
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(20),
+                  boxShadow: [
+                    BoxShadow(
+                      color: theme.shadowColor.withOpacity(0.15),
+                      blurRadius: 15,
+                      offset: const Offset(0, 10),
+                    ),
+                  ],
+                ),
+                child: ClipRRect(
+                  borderRadius: BorderRadius.circular(20),
+                  child: Image.asset(
+                    product.imageUrl,
+                    height: 280,
+                    fit: BoxFit.cover,
+                  ),
+                ),
               ),
             ),
+            const SizedBox(height: 30),
+            Text(
+              product.name,
+              style: theme.textTheme.headlineSmall?.copyWith(
+                fontWeight: FontWeight.bold,
+                color: theme.colorScheme.onBackground,
+              ),
+            ),
+            const SizedBox(height: 12),
+            Text(
+              product.description,
+              style: theme.textTheme.bodyMedium?.copyWith(
+                height: 1.5,
+                color: theme.colorScheme.onBackground.withOpacity(0.8),
+                fontSize: 16,
+              ),
+            ),
+            const SizedBox(height: 25),
+            Text(
+              'Rs ${product.price.toStringAsFixed(2)}',
+              style: theme.textTheme.titleLarge?.copyWith(
+                color: theme.colorScheme.primary,
+                fontWeight: FontWeight.w700,
+              ),
+            ),
+            const SizedBox(height: 100), // Space for bottom button
           ],
+        ),
+      ),
+      bottomNavigationBar: Container(
+        padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 12),
+        color: theme.colorScheme.background,
+        child: SizedBox(
+          height: 52,
+          width: double.infinity,
+          child: ElevatedButton(
+            style: ElevatedButton.styleFrom(
+              backgroundColor: theme.colorScheme.primary,
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(10),
+              ),
+              elevation: 6,
+              shadowColor: theme.colorScheme.primary.withOpacity(0.4),
+            ),
+            onPressed: () => _addToCart(context),
+            child: Text(
+              'Add to Cart',
+              style: theme.textTheme.labelLarge?.copyWith(
+                color: theme.colorScheme.onPrimary,
+                fontSize: 18,
+                fontWeight: FontWeight.bold,
+                letterSpacing: 1,
+              ),
+            ),
+          ),
         ),
       ),
     );

@@ -1,4 +1,5 @@
 import 'package:ecommerce/class/model.dart';
+import 'package:ecommerce/screen/CartScreen.dart';
 import 'package:ecommerce/screen/productdetail.dart';
 import 'package:flutter/material.dart';
 
@@ -73,7 +74,12 @@ class _MobilesState extends State<Mobiles> {
             children: [
               IconButton(
                 icon: const Icon(Icons.shopping_cart_outlined),
-                onPressed: () {},
+                onPressed: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (context) => CartScreen()),
+                  );
+                },
               ),
               if (cartItems.isNotEmpty)
                 Positioned(
@@ -133,7 +139,9 @@ class _MobilesState extends State<Mobiles> {
                     Hero(
                       tag: product.imageUrl,
                       child: ClipRRect(
-                        borderRadius: const BorderRadius.vertical(top: Radius.circular(18)),
+                        borderRadius: const BorderRadius.vertical(
+                          top: Radius.circular(18),
+                        ),
                         child: Image.asset(
                           product.imageUrl,
                           height: 130,
@@ -157,6 +165,7 @@ class _MobilesState extends State<Mobiles> {
                                     fontWeight: FontWeight.bold,
                                     fontSize: 16,
                                   ),
+                                  overflow: TextOverflow.ellipsis,
                                 ),
                               ),
                               IconButton(
@@ -188,7 +197,11 @@ class _MobilesState extends State<Mobiles> {
                                 shape: const CircleBorder(),
                                 elevation: 3,
                               ),
-                              child: const Icon(Icons.add_shopping_cart, size: 20, color: Colors.white),
+                              child: const Icon(
+                                Icons.add_shopping_cart,
+                                size: 20,
+                                color: Colors.white,
+                              ),
                             ),
                           ),
                         ],

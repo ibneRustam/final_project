@@ -4,30 +4,42 @@ import 'package:ecommerce/firebase_options.dart';
 import 'package:ecommerce/screen/catlog.dart';
 import 'package:ecommerce/screen/home.dart';
 import 'package:ecommerce/screen/login.dart';
+import 'package:ecommerce/screen/profiledetail.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
-
+import 'package:firebase_auth/firebase_auth.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-
   await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
-
-  runApp(MyApp());
+  runApp(const MyApp());
 }
 
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
 
+  static const Color mainColor1 = Color(0xff134e5e);
+  static const Color mainColor2 = Color(0xff71b280);
+
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
-      title: 'Final Project',
+      title: 'MuftiMart',
       theme: ThemeData(
-        colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
-        brightness: Brightness.light,
+        colorScheme: ColorScheme.fromSeed(seedColor: mainColor1),
         useMaterial3: true,
+        scaffoldBackgroundColor: Colors.grey.shade100,
+        appBarTheme: const AppBarTheme(
+          backgroundColor: Colors.transparent,
+          elevation: 0,
+          titleTextStyle: TextStyle(
+            fontWeight: FontWeight.bold,
+            fontSize: 22,
+            color: Colors.white,
+          ),
+          centerTitle: true,
+        ),
         bottomAppBarTheme: const BottomAppBarTheme(color: Colors.white),
       ),
       home: const SplashScreen(),
@@ -35,11 +47,8 @@ class MyApp extends StatelessWidget {
   }
 }
 
-// import 'package:flutter/material.dart';
-
 class SplashScreen extends StatefulWidget {
   const SplashScreen({super.key});
-
   @override
   State<SplashScreen> createState() => _SplashScreenState();
 }
@@ -48,7 +57,7 @@ class _SplashScreenState extends State<SplashScreen> {
   @override
   void initState() {
     super.initState();
-    Future.delayed(const Duration(seconds: 2), () {
+    Future.delayed(const Duration(seconds: 1), () {
       Navigator.pushReplacement(
         context,
         MaterialPageRoute(builder: (context) => const TabbarScreen()),
@@ -74,13 +83,13 @@ class _SplashScreenState extends State<SplashScreen> {
               Text(
                 "MuftiMart",
                 style: TextStyle(
-                  fontSize: 36,
+                  fontSize: 40,
                   fontWeight: FontWeight.bold,
                   color: Colors.white,
-                  letterSpacing: 1.5,
+                  letterSpacing: 2,
                 ),
               ),
-              SizedBox(height: 10),
+              SizedBox(height: 12),
               Text(
                 "Trusted. Halal. Convenient.",
                 style: TextStyle(fontSize: 16, color: Colors.white70),
@@ -104,18 +113,35 @@ class _TabbarScreenState extends State<TabbarScreen> {
   int _currentIndex = 0;
   late PageController _pageController;
 
-  final List<Widget> _pages = [
-    const HomeScreen(),
-    const Catalog(),
-    const Card(),
-    // const Favorites(),
-    const LoginScreen(),
-  ];
+  bool get _isUserLoggedIn => FirebaseAuth.instance.currentUser != null;
+
+  late List<Widget> _pages;
 
   @override
   void initState() {
     super.initState();
     _pageController = PageController(initialPage: _currentIndex);
+
+    _pages = [
+      const HomeScreen(),
+      const Catalog(),
+      const Card(),
+      _isUserLoggedIn ? const Profiledetail() : const LoginScreen(),
+    ];
+  }
+
+  void _onTabTapped(int index) {
+    setState(() {
+      _currentIndex = index;
+      if (index == 3) {
+        _pages[3] = _isUserLoggedIn ? const Profiledetail() : const LoginScreen();
+      }
+    });
+    _pageController.animateToPage(
+      index,
+      duration: const Duration(milliseconds: 300),
+      curve: Curves.easeInOut,
+    );
   }
 
   @override
@@ -124,36 +150,18 @@ class _TabbarScreenState extends State<TabbarScreen> {
     super.dispose();
   }
 
-  void _onTabTapped(int index) {
-    setState(() {
-      _currentIndex = index;
-    });
-    _pageController.animateToPage(
-      index,
-      duration: const Duration(milliseconds: 350),
-      curve: Curves.easeInOutCubic,
-    );
-  }
-
   @override
   Widget build(BuildContext context) {
+    const gradientColors = [Color(0xff134e5e), Color.fromARGB(255, 112, 177, 127)];
+
     return Scaffold(
       extendBody: true,
       appBar: AppBar(
-        elevation: 6,
-        centerTitle: true,
-        title: const Text(
-          "Electronic App",
-          style: TextStyle(
-            fontWeight: FontWeight.bold,
-            color: Colors.white,
-            fontSize: 22,
-          ),
-        ),
+        title: const Text("MuftiMart"),
         flexibleSpace: Container(
           decoration: const BoxDecoration(
             gradient: LinearGradient(
-              colors: [Color(0xFF26A69A), Color(0xFF66BB6A)],
+              colors: gradientColors,
               begin: Alignment.topLeft,
               end: Alignment.bottomRight,
             ),
@@ -185,7 +193,7 @@ class _TabbarScreenState extends State<TabbarScreen> {
               currentIndex: _currentIndex,
               onTap: _onTabTapped,
               backgroundColor: Colors.white.withOpacity(0.85),
-              selectedItemColor: Colors.green.shade600,
+              selectedItemColor: Color(0xff134e5e),
               unselectedItemColor: Colors.grey.shade600,
               showUnselectedLabels: true,
               type: BottomNavigationBarType.fixed,
@@ -204,10 +212,6 @@ class _TabbarScreenState extends State<TabbarScreen> {
                   icon: Icon(Icons.shopping_cart_outlined, size: 26),
                   label: 'Cart',
                 ),
-                // BottomNavigationBarItem(
-                //   icon: Icon(Icons.favorite_border, size: 26),
-                //   label: 'Favorites',
-                // ),
                 BottomNavigationBarItem(
                   icon: Icon(Icons.person_outline, size: 26),
                   label: 'Profile',
