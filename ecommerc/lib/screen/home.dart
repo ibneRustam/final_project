@@ -24,20 +24,20 @@ class _HomeScreenState extends State<HomeScreen> {
   late Timer _bannerTimer;
   late Timer _categoryScrollTimer;
 
-  final List<Map<String, String>> electronicItem = [
-    {"name": "Mobiles", "image": "assets/image/mobileee.webp"},
-    {"name": "Laptops", "image": "assets/image/lap1.jpg"},
-    {"name": "Smart Watches", "image": "assets/image/watch1.webp"},
-    {"name": "Tablets", "image": "assets/image/tablet.jpg"},
-    {"name": "Air buds", "image": "assets/image/airbird3.webp"},
-    {"name": "Accessories", "image": "assets/image/acc1.jpg"},
+  final List<Map<String, dynamic>> electronicItem = [
+    {"name": "Mobiles", "icon": Icons.phone_android},
+    {"name": "Laptops", "icon": Icons.laptop_mac},
+    {"name": "Smart Watches", "icon": Icons.watch},
+    {"name": "Tablets", "icon": Icons.tablet_mac},
+    {"name": "Air buds", "icon": Icons.headphones},
+    {"name": "Accessories", "icon": Icons.cable},
   ];
 
   final Map<String, Widget> itemList = {
     "Mobiles": Mobiles(),
     "Laptops": Laptops(),
-    "Smart Watches": smartWatches(),
-    "Tablets": tablet(),
+    "Smart Watches": smartwatch(),
+    "Tablets": Tablet(),
     "Air buds": airbuds(),
     "Accessories": Accessories(),
   };
@@ -49,16 +49,19 @@ class _HomeScreenState extends State<HomeScreen> {
     "assets/image/home4.jpg",
   ];
 
-  final List<Product> homepage = [
+  final List<Product> allProducts = [
     Product(1, 'Mobile', 'Latest model with high performance', 12000.99, "assets/image/mbl1.webp"),
     Product(2, 'Laptop', 'Slim and powerful laptop', 55000.50, "assets/image/lap1.jpg"),
     Product(3, 'Smart Watch', 'Smartwatch with fitness tracking', 4999.99, "assets/image/watch1.webp"),
     Product(4, 'Air buds', 'Best sound Air buds', 5999.00, "assets/image/airbird1.webp"),
   ];
 
+  List<Product> displayedProducts = [];
+
   @override
   void initState() {
     super.initState();
+    displayedProducts = List.from(allProducts);
     _bannerController = PageController(viewportFraction: 0.9);
     _categoryScrollController = ScrollController();
 
@@ -94,6 +97,19 @@ class _HomeScreenState extends State<HomeScreen> {
     super.dispose();
   }
 
+  void filterProducts(String query) {
+    final results = allProducts.where((product) {
+      final name = product.name.toLowerCase();
+      final desc = product.description.toLowerCase();
+      final input = query.toLowerCase();
+      return name.contains(input) || desc.contains(input);
+    }).toList();
+
+    setState(() {
+      displayedProducts = results;
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     final screenWidth = MediaQuery.of(context).size.width;
@@ -104,22 +120,8 @@ class _HomeScreenState extends State<HomeScreen> {
       body: ListView(
         padding: const EdgeInsets.all(16),
         children: [
-          // Welcome Text with reduced vertical padding
-          Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 0, vertical: 4),
-            child: Row(
-              children: const [
-                Icon(Icons.flash_on, color: Color.fromARGB(255, 47, 105, 60)),
-                SizedBox(width: 8),
-                Flexible(
-                  child: Text(
-                    "Welcome to M. Mart!",
-                    style: TextStyle(fontWeight: FontWeight.bold, fontSize: 18),
-                  ),
-                ),
-              ],
-            ),
-          ),
+        
+        
 
           const SizedBox(height: 12),
 
@@ -153,6 +155,7 @@ class _HomeScreenState extends State<HomeScreen> {
               boxShadow: const [BoxShadow(color: Colors.black12, blurRadius: 6)],
             ),
             child: TextField(
+              onChanged: filterProducts,
               decoration: InputDecoration(
                 hintText: "Search for gadgets...",
                 prefixIcon: Icon(Icons.search, color: themeColor),
@@ -171,7 +174,7 @@ class _HomeScreenState extends State<HomeScreen> {
               const Text("Categories", style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20)),
               TextButton(
                 onPressed: () => Navigator.push(context, MaterialPageRoute(builder: (_) => const Catalog())),
-                child: Text("See All", style: TextStyle(color: themeColor)),
+                child: Text("See All", style: TextStyle(color: Colors.teal.shade600)),
               ),
             ],
           ),
@@ -179,90 +182,82 @@ class _HomeScreenState extends State<HomeScreen> {
           const SizedBox(height: 8),
 
           // Auto-Scrolling Categories
-      SizedBox(
-  height: isTablet ? 160 : 130,
-  child: ListView.builder(
-    controller: _categoryScrollController,
-    scrollDirection: Axis.horizontal,
-    itemCount: electronicItem.length,
-    itemBuilder: (_, index) {
-      final item = electronicItem[index];
-      final screen = itemList[item['name']];
-      return InkWell(
-        borderRadius: BorderRadius.circular(16),
-        onTap: () {
-          if (screen != null) {
-            Navigator.push(context, MaterialPageRoute(builder: (_) => screen));
-          }
-        },
-        child: Container(
-          width: isTablet ? 120 : 100,
-          margin: const EdgeInsets.symmetric(horizontal: 8),
-          decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(16),
-            gradient: LinearGradient(
-              colors: [themeColor.withOpacity(0.8), themeColor.withOpacity(0.3)],
-              begin: Alignment.topLeft,
-              end: Alignment.bottomRight,
-            ),
-            boxShadow: const [
-              BoxShadow(
-                color: Colors.black26,
-                blurRadius: 10,
-                offset: Offset(0, 4),
-              )
-            ],
-          ),
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.start,
-            children: [
-              Container(
-                width: isTablet ? 80 : 60,
-                height: isTablet ? 80 : 60,
-                margin: const EdgeInsets.only(top: 16),
-                decoration: BoxDecoration(
-                  shape: BoxShape.circle,
-                  image: DecorationImage(
-                    image: AssetImage(item['image']!),
-                    fit: BoxFit.cover,
-                  ),
-                  border: Border.all(color: Colors.white, width: 2),
-                ),
-              ),
-              const SizedBox(height: 12),
-              Text(
-                item['name']!,
-                style: const TextStyle(
-                  fontSize: 14,
-                  fontWeight: FontWeight.w700,
-                  color: Colors.white,
-                  shadows: [
-                    Shadow(
-                      color: Colors.black45,
-                      offset: Offset(1, 1),
-                      blurRadius: 2,
+          SizedBox(
+            height: isTablet ? 160 : 130,
+            child: ListView.builder(
+              controller: _categoryScrollController,
+              scrollDirection: Axis.horizontal,
+              itemCount: electronicItem.length,
+              itemBuilder: (_, index) {
+                final item = electronicItem[index];
+                final screen = itemList[item['name']];
+                return InkWell(
+                  borderRadius: BorderRadius.circular(100),
+                  onTap: () {
+                    if (screen != null) {
+                      Navigator.push(context, MaterialPageRoute(builder: (_) => screen));
+                    }
+                  },
+                  child: Container(
+                    width: isTablet ? 120 : 100,
+                    height: isTablet ? 120 : 100,
+                    margin: const EdgeInsets.symmetric(horizontal: 8),
+                    decoration: BoxDecoration(
+                      shape: BoxShape.circle,
+                      gradient: LinearGradient(
+                        colors: [Colors.teal.shade600, Colors.teal.shade300],
+                        begin: Alignment.topLeft,
+                        end: Alignment.bottomRight,
+                      ),
+                      boxShadow: const [
+                        BoxShadow(
+                          color: Colors.black26,
+                          blurRadius: 10,
+                          offset: Offset(0, 4),
+                        )
+                      ],
                     ),
-                  ],
-                ),
-              ),
-            ],
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Icon(
+                          item['icon'],
+                          size: isTablet ? 40 : 30,
+                          color: Colors.white,
+                        ),
+                        const SizedBox(height: 6),
+                        Text(
+                          item['name'],
+                          style: const TextStyle(
+                            fontSize: 13,
+                            fontWeight: FontWeight.bold,
+                            color: Colors.white,
+                            shadows: [
+                              Shadow(
+                                color: Colors.black45,
+                                offset: Offset(1, 1),
+                                blurRadius: 2,
+                              ),
+                            ],
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                );
+              },
+            ),
           ),
-        ),
-      );
-    },
-  ),
-),
-
 
           const SizedBox(height: 28),
           const Text("Recommended", style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20)),
           const SizedBox(height: 12),
 
-          // Recommended Products
+          // Filtered Products Grid
           GridView.builder(
             physics: const NeverScrollableScrollPhysics(),
             shrinkWrap: true,
-            itemCount: homepage.length,
+            itemCount: displayedProducts.length,
             gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
               crossAxisCount: 2,
               mainAxisSpacing: 16,
@@ -270,7 +265,7 @@ class _HomeScreenState extends State<HomeScreen> {
               childAspectRatio: 0.68,
             ),
             itemBuilder: (_, index) {
-              final product = homepage[index];
+              final product = displayedProducts[index];
               return GestureDetector(
                 onTap: () => Navigator.push(
                   context,
@@ -285,7 +280,6 @@ class _HomeScreenState extends State<HomeScreen> {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      // Product Image
                       ClipRRect(
                         borderRadius: const BorderRadius.only(
                           topLeft: Radius.circular(18),
@@ -298,7 +292,6 @@ class _HomeScreenState extends State<HomeScreen> {
                           fit: BoxFit.cover,
                         ),
                       ),
-                      // Product Name
                       Padding(
                         padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
                         child: Text(
@@ -311,7 +304,6 @@ class _HomeScreenState extends State<HomeScreen> {
                           overflow: TextOverflow.ellipsis,
                         ),
                       ),
-                      // Product Description with less padding
                       Padding(
                         padding: const EdgeInsets.symmetric(horizontal: 8),
                         child: Text(
@@ -321,7 +313,6 @@ class _HomeScreenState extends State<HomeScreen> {
                           overflow: TextOverflow.ellipsis,
                         ),
                       ),
-                      // Price with Rs: prefix and less padding
                       Padding(
                         padding: const EdgeInsets.all(8.0),
                         child: Text(

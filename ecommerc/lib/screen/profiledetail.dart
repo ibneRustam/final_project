@@ -1,9 +1,10 @@
-import 'package:ecommerce/main.dart';
-import 'package:ecommerce/screen/login.dart';
-import 'package:flutter/material.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'dart:io';
 
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:ecommerce/screen/login.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_storage/firebase_storage.dart';
+import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 
 class Profiledetail extends StatefulWidget {
@@ -17,6 +18,7 @@ class _ProfiledetailState extends State<Profiledetail> {
   bool _isEditing = false;
   bool _notificationsEnabled = true;
   File? _imageFile;
+  String? _photoUrl; // Firebase Storage URL
 
   final TextEditingController _nameController = TextEditingController();
   final TextEditingController _emailController = TextEditingController();
@@ -28,12 +30,49 @@ class _ProfiledetailState extends State<Profiledetail> {
     _loadUserData();
   }
 
-  void _loadUserData() {
+  Future<void> _loadUserData() async {
     final user = FirebaseAuth.instance.currentUser;
     if (user != null) {
-      _nameController.text = user.displayName ?? '';
-      _emailController.text = user.email ?? '';
-      _phoneController.text = user.phoneNumber ?? '+92 300 1234567';
+      // Firestore user deta
+      final doc = await FirebaseFirestore.instance.collection('users').doc(user.uid).get();
+      if (doc.exists) {
+        final data = doc.data()!;
+        setState(() {
+          _nameController.text = data['name'] ?? user.displayName ?? '';
+          _emailController.text = data['email'] ?? user.email ?? '';
+          _phoneController.text = data['contact'] ?? user.phoneNumber ?? '';
+          _photoUrl = data['photoURL'];
+        });
+      } else {
+
+// farebase User
+        setState(() {
+          _nameController.text = user.displayName ?? '';
+          _emailController.text = user.email ?? '';
+          _phoneController.text = user.phoneNumber ?? '';
+          _photoUrl = user.photoURL;
+        });
+      }
+    }
+  }
+
+  Future<String?> uploadImageToFirebase(File imageFile) async {
+    try {
+      final user = FirebaseAuth.instance.currentUser;
+      if (user == null) return null;
+
+      final storageRef = FirebaseStorage.instance
+          .ref()
+          .child('profile_images')
+          .child('${user.uid}.jpg');
+
+      await storageRef.putFile(imageFile);
+
+      final downloadUrl = await storageRef.getDownloadURL();
+      return downloadUrl;
+    } catch (e) {
+      print('Error uploading image: $e');
+      return null;
     }
   }
 
@@ -44,6 +83,48 @@ class _ProfiledetailState extends State<Profiledetail> {
       setState(() {
         _imageFile = File(picked.path);
       });
+
+
+// Firestore URL
+      String? imageUrl = await uploadImageToFirebase(_imageFile!);
+      if (imageUrl != null) {
+        final user = FirebaseAuth.instance.currentUser;
+        if (user != null) {
+          await FirebaseFirestore.instance.collection('users').doc(user.uid).set({
+            'photoURL': imageUrl,
+            'name': _nameController.text,
+            'email': _emailController.text,
+            'contact': _phoneController.text,
+          }, SetOptions(merge: true));
+        }
+        setState(() {
+          _photoUrl = imageUrl;
+        });
+      }
+    }
+  }
+
+  Future<void> _saveProfile() async {
+    final user = FirebaseAuth.instance.currentUser;
+    if (user != null) {
+      // Firestore deta save
+      await FirebaseFirestore.instance.collection('users').doc(user.uid).set({
+        'name': _nameController.text,
+        'email': _emailController.text,
+        'contact': _phoneController.text,
+        'photoURL': _photoUrl,
+      }, SetOptions(merge: true));
+
+      await user.updateDisplayName(_nameController.text);
+      await user.reload();
+
+      setState(() {
+        _isEditing = false;
+      });
+
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text('Profile updated successfully')),
+      );
     }
   }
 
@@ -62,37 +143,37 @@ class _ProfiledetailState extends State<Profiledetail> {
     return Scaffold(
       backgroundColor: Colors.grey[100],
       appBar: AppBar(
-  title: const Text("My Profile", style: TextStyle(color: Colors.white)),
-  centerTitle: true,
-  backgroundColor: const Color(0xff134e5e),
-  leading: IconButton(
-    icon: const Icon(Icons.home, color: Colors.white),
-    onPressed: () {
-      Navigator.push(
-        context,
-        MaterialPageRoute(builder: (_) => TabbarScreen()),
-      );
-    },
-  ),
-  actions: [
-    TextButton.icon(
-      onPressed: () {
-        setState(() {
-          _isEditing = !_isEditing;
-        });
-      },
-      icon: Icon(
-        _isEditing ? Icons.check : Icons.edit,
-        color: Colors.white,
+        title: const Text("My Profile", style: TextStyle(color: Colors.white)),
+        centerTitle: true,
+        backgroundColor: const Color(0xff134e5e),
+        leading: IconButton(
+          icon: const Icon(Icons.home, color: Colors.white),
+          onPressed: () {
+            Navigator.pop(context);
+          },
+        ),
+        actions: [
+          TextButton.icon(
+            onPressed: () async {
+              if (_isEditing) {
+                await _saveProfile();
+              } else {
+                setState(() {
+                  _isEditing = true;
+                });
+              }
+            },
+            icon: Icon(
+              _isEditing ? Icons.check : Icons.edit,
+              color: Colors.white,
+            ),
+            label: Text(
+              _isEditing ? "Save" : "Edit",
+              style: const TextStyle(color: Colors.white),
+            ),
+          ),
+        ],
       ),
-      label: Text(
-        _isEditing ? "Save" : "Edit",
-        style: const TextStyle(color: Colors.white),
-      ),
-    ),
-  ],
-),
-
       body: SafeArea(
         child: SingleChildScrollView(
           padding: const EdgeInsets.only(bottom: 80),
@@ -111,33 +192,35 @@ class _ProfiledetailState extends State<Profiledetail> {
                   child: Stack(
                     alignment: Alignment.center,
                     children: [
-                      _imageFile != null
-                          ? CircleAvatar(
-                            radius: 60,
-                            backgroundImage: FileImage(_imageFile!),
-                          )
-                          : CircleAvatar(
-                            radius: 60,
-                            backgroundColor: Colors.white,
-                            child: Text(
-                              _getInitials(name),
-                              style: const TextStyle(
-                                fontSize: 30,
-                                fontWeight: FontWeight.bold,
-                                color: Color(0xff134e5e),
-                              ),
-                            ),
-                          ),
+                      CircleAvatar(
+                        radius: 60,
+                        backgroundColor: Colors.white,
+                        backgroundImage: _imageFile != null
+                            ? FileImage(_imageFile!)
+                            : (_photoUrl != null
+                                ? NetworkImage(_photoUrl!)
+                                : null) as ImageProvider<Object>?,
+                        child: (_imageFile == null && _photoUrl == null)
+                            ? Text(
+                                _getInitials(name),
+                                style: const TextStyle(
+                                  fontSize: 30,
+                                  fontWeight: FontWeight.bold,
+                                  color: Color(0xff134e5e),
+                                ),
+                              )
+                            : null,
+                      ),
                       if (_isEditing)
                         Positioned(
                           bottom: 0,
                           right: 0,
                           child: InkWell(
                             onTap: _pickImage,
-                            child: CircleAvatar(
+                            child: const CircleAvatar(
                               radius: 18,
                               backgroundColor: Color(0xff134e5e),
-                              child: const Icon(
+                              child: Icon(
                                 Icons.camera_alt,
                                 color: Colors.white,
                               ),

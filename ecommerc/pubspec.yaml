@@ -35,13 +35,16 @@ dependencies:
     sdk: flutter
   cupertino_icons: ^1.0.8
   firebase_core: ^3.13.0
-  firebase_auth: ^5.5.3
+  firebase_auth: ^5.5.4
   firebase_database: ^11.3.6
   url_launcher: ^6.1.10
   cloud_firestore: ^5.6.8
   image_picker: ^0.8.7+4
   firebase_storage: ^12.4.6
   provider: ^6.1.5
+  google_fonts: ^6.2.1
+  google_sign_in: ^6.3.0
+  flutter_facebook_auth: ^7.1.2
 
 
 

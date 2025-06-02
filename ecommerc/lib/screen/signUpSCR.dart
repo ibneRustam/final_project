@@ -2,6 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:ecommerce/screen/profiledetail.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:google_fonts/google_fonts.dart';  
 
 class SignupScreen extends StatefulWidget {
   const SignupScreen({super.key});
@@ -45,11 +46,20 @@ class _SignupScreenState extends State<SignupScreen> {
         password: _passwordController.text.trim(),
       );
 
+      final uid = userCredential.user?.uid;
+
+      if (uid == null) {
+        setState(() {
+          _error = "User ID is null.";
+          _isLoading = false;
+        });
+        return;
+      }
+
       await userCredential.user?.updateDisplayName(_nameController.text.trim());
 
-      // Save additional user data to Firestore
-      await _firestore.collection('users').doc(userCredential.user?.uid).set({
-        'uid': userCredential.user?.uid,
+      await _firestore.collection('users').doc(uid).set({
+        'uid': uid,
         'name': _nameController.text.trim(),
         'email': _emailController.text.trim(),
         'contact': _contactNumber.text.trim(),
@@ -101,81 +111,110 @@ class _SignupScreenState extends State<SignupScreen> {
               margin: const EdgeInsets.symmetric(horizontal: 24),
               padding: const EdgeInsets.all(24),
               decoration: BoxDecoration(
-                color: Colors.white.withOpacity(0.95),
-                borderRadius: BorderRadius.circular(16),
+                color: Colors.white.withOpacity(0.97),
+                borderRadius: BorderRadius.circular(30),
                 boxShadow: [
                   BoxShadow(
-                    color: Colors.black26,
-                    blurRadius: 12,
-                    offset: const Offset(0, 6),
+                    color: Colors.black12,
+                    blurRadius: 15,
+                    spreadRadius: 3,
+                    offset: const Offset(0, 8),
                   ),
                 ],
               ),
               child: Column(
                 mainAxisSize: MainAxisSize.min,
                 children: [
-                  const Text(
+                  Text(
                     'Create Account',
                     style: TextStyle(
                       fontSize: 26,
                       fontWeight: FontWeight.bold,
-                      color: Color(0xff134e5e),
+                      color: const Color(0xff134e5e),
                     ),
                   ),
-                  const SizedBox(height: 24),
+                  const SizedBox(height: 28),
                   TextField(
                     controller: _nameController,
                     decoration: InputDecoration(
                       labelText: 'Full Name',
+                      filled: true,
+                      fillColor: Colors.grey[100],
                       prefixIcon: const Icon(Icons.person_outline),
-                      border: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(12),
+                      enabledBorder: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(20),
+                        borderSide: BorderSide(color: Colors.grey.shade400, width: 1),
+                      ),
+                      focusedBorder: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(20),
+                        borderSide: const BorderSide(color: Color(0xff71b280), width: 2),
                       ),
                     ),
                   ),
-                  const SizedBox(height: 16),
+                  const SizedBox(height: 18),
                   TextField(
                     controller: _emailController,
                     keyboardType: TextInputType.emailAddress,
                     decoration: InputDecoration(
                       labelText: 'Email',
+                      filled: true,
+                      fillColor: Colors.grey[100],
                       prefixIcon: const Icon(Icons.email_outlined),
-                      border: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(12),
+                      enabledBorder: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(20),
+                        borderSide: BorderSide(color: Colors.grey.shade400, width: 1),
+                      ),
+                      focusedBorder: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(20),
+                        borderSide: const BorderSide(color: Color(0xff71b280), width: 2),
                       ),
                     ),
                   ),
-                  const SizedBox(height: 16),
+                  const SizedBox(height: 18),
                   TextField(
                     controller: _contactNumber,
                     keyboardType: TextInputType.phone,
                     decoration: InputDecoration(
                       labelText: 'Contact No',
+                      filled: true,
+                      fillColor: Colors.grey[100],
                       prefixIcon: const Icon(Icons.phone_outlined),
-                      border: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(12),
+                      enabledBorder: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(20),
+                        borderSide: BorderSide(color: Colors.grey.shade400, width: 1),
+                      ),
+                      focusedBorder: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(20),
+                        borderSide: const BorderSide(color: Color(0xff71b280), width: 2),
                       ),
                     ),
                   ),
-                  const SizedBox(height: 16),
+                  const SizedBox(height: 18),
                   TextField(
                     controller: _passwordController,
                     obscureText: true,
                     decoration: InputDecoration(
                       labelText: 'Password',
+                      filled: true,
+                      fillColor: Colors.grey[100],
                       prefixIcon: const Icon(Icons.lock_outline),
-                      border: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(12),
+                      enabledBorder: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(20),
+                        borderSide: BorderSide(color: Colors.grey.shade400, width: 1),
+                      ),
+                      focusedBorder: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(20),
+                        borderSide: const BorderSide(color: Color(0xff71b280), width: 2),
                       ),
                     ),
                   ),
-                  const SizedBox(height: 20),
+                  const SizedBox(height: 24),
                   if (_error != null)
                     Text(
                       _error!,
                       style: const TextStyle(color: Colors.red, fontSize: 14),
                     ),
-                  const SizedBox(height: 10),
+                  if (_error != null) const SizedBox(height: 14),
                   _isLoading
                       ? const CircularProgressIndicator()
                       : SizedBox(
@@ -186,18 +225,22 @@ class _SignupScreenState extends State<SignupScreen> {
                               backgroundColor: const Color(0xff71b280),
                               padding: const EdgeInsets.symmetric(vertical: 14),
                               shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(12),
+                                borderRadius: BorderRadius.circular(30),
                               ),
-                              elevation: 3,
+                              elevation: 5,
                               shadowColor: Colors.black45,
                             ),
-                            child: const Text(
+                            child: Text(
                               'Sign Up',
-                              style: TextStyle(fontSize: 16, color: Colors.white),
+                              style: TextStyle(
+                                fontSize: 16,
+                                color: Colors.white,
+                                
+                              ),
                             ),
                           ),
                         ),
-                  const SizedBox(height: 16),
+                  const SizedBox(height: 18),
                   TextButton(
                     onPressed: () {
                       Navigator.pop(context);

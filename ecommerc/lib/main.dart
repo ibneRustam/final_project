@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'dart:ui' show ImageFilter;
 import 'package:ecommerce/firebase_options.dart';
+import 'package:ecommerce/screen/CartScreen.dart';
 import 'package:ecommerce/screen/catlog.dart';
 import 'package:ecommerce/screen/home.dart';
 import 'package:ecommerce/screen/login.dart';
@@ -57,7 +58,7 @@ class _SplashScreenState extends State<SplashScreen> {
   @override
   void initState() {
     super.initState();
-    Future.delayed(const Duration(seconds: 3), () {
+    Future.delayed(const Duration(seconds: 1), () {
       Navigator.pushReplacement(
         context,
         MaterialPageRoute(builder: (context) => const TabbarScreen()),
@@ -125,7 +126,7 @@ class _TabbarScreenState extends State<TabbarScreen> {
     _pages = [
       const HomeScreen(),
       const Catalog(),
-      const Card(),
+      const CartScreen(),
       _isUserLoggedIn ? const Profiledetail() : const LoginScreen(),
     ];
   }

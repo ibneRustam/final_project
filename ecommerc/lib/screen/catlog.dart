@@ -26,10 +26,10 @@ class _CatalogState extends State<Catalog> {
   Map itemList = {
     "Mobiles": Mobiles(),
     "Laptops": Laptops(),
-    "Smart Watches": smartWatches(),
+    "Smart Watches": smartwatch(),
     "Airbuds": airbuds(),
     "Accessories": Accessories(),
-    "Tablets": tablet(),
+    "Tablets": Tablet(),
   };
 
   Color primaryColor = const Color(0xff134e5e);
