@@ -3,9 +3,9 @@ const MANIFEST = 'flutter-app-manifest';
 const TEMP = 'flutter-temp-cache';
 const CACHE_NAME = 'flutter-app-cache';
 
-const RESOURCES = {"assets/AssetManifest.bin": "1f021b9c1d96ab80edf62344d690ddfd",
-"assets/AssetManifest.bin.json": "3c30af52f3407b884d3d6ce62f4124a3",
-"assets/AssetManifest.json": "cb53aa0eebac21ec588b7ce923af64e9",
+const RESOURCES = {"assets/AssetManifest.bin": "abb6a2e2649eaf7da480e5e528502c26",
+"assets/AssetManifest.bin.json": "8368f757529c4645403e8ccc3f849473",
+"assets/AssetManifest.json": "5516ada5ecb7ec2c9de55186dd466b65",
 "assets/assets/image/acc1.jpg": "d954bfee745c20917f5f9d3d7fddda0d",
 "assets/assets/image/acc2.jpg": "471e3d57098d3e15ec7e4b221a8735fb",
 "assets/assets/image/acc3.jpg": "f6bc7d86dd7693cfe40e7202158b27f2",
@@ -35,6 +35,7 @@ const RESOURCES = {"assets/AssetManifest.bin": "1f021b9c1d96ab80edf62344d690ddfd
 "assets/assets/image/console.jpg": "0c40ad4cd1c2cab600f5ec46a2b31079",
 "assets/assets/image/download.jpg": "f2ba9435c0ccf51e78a12c7474d57d80",
 "assets/assets/image/earphone.jpg": "2611ad7690fc28a9f2ef6d024027caf1",
+"assets/assets/image/google.png": "afd82dec6d2611e778653a66f2bb8762",
 "assets/assets/image/home1.jpg": "63a83d2d147edfad6bcc1fa274484a67",
 "assets/assets/image/home2.jpg": "b3286862c302a30d013ad038ed416689",
 "assets/assets/image/home3.jpg": "e7a6ef0d5412b2596576b11994a0184c",
@@ -93,8 +94,8 @@ const RESOURCES = {"assets/AssetManifest.bin": "1f021b9c1d96ab80edf62344d690ddfd
 "assets/assets/image/watch8.webp": "8fe6ff1c4a057c6e553cea4973a7f5d1",
 "assets/assets/image/watch9.webp": "31878fe78dfb1baf68a4988169f2814b",
 "assets/FontManifest.json": "dc3d03800ccca4601324923c0b1d6d57",
-"assets/fonts/MaterialIcons-Regular.otf": "a2a472df97948962241d75aa5b2ceab3",
-"assets/NOTICES": "cd17046e67ceb482880e2bff04e73d61",
+"assets/fonts/MaterialIcons-Regular.otf": "6037ff0a48ec213922f376a7945cf1e5",
+"assets/NOTICES": "6ecb804d4dcaffe6160116a350d07c60",
 "assets/packages/cupertino_icons/assets/CupertinoIcons.ttf": "33b7d9392238c04c131b6ce224e13711",
 "assets/shaders/ink_sparkle.frag": "ecc85a2e95f5e9f53123dcaf8cb9b6ce",
 "canvaskit/canvaskit.js": "86e461cf471c1640fd2b461ece4589df",
@@ -111,14 +112,14 @@ const RESOURCES = {"assets/AssetManifest.bin": "1f021b9c1d96ab80edf62344d690ddfd
 "canvaskit/skwasm_st.wasm": "56c3973560dfcbf28ce47cebe40f3206",
 "favicon.png": "5dcef449791fa27946b3d35ad8803796",
 "flutter.js": "76f08d47ff9f5715220992f993002504",
-"flutter_bootstrap.js": "b22bd59363546dddae6289d7c32f9452",
+"flutter_bootstrap.js": "fd438683a881b6c542be90e47f75a85c",
 "icons/Icon-192.png": "ac9a721a12bbc803b44f645561ecb1e1",
 "icons/Icon-512.png": "96e752610906ba2a93c65f8abe1645f1",
 "icons/Icon-maskable-192.png": "c457ef57daa1d16f64b27b786ec2ea3c",
 "icons/Icon-maskable-512.png": "301a7604d45b3e739efc881eb04896ea",
 "index.html": "ecd8403d0a022aaecdbbf037779571d3",
 "/": "ecd8403d0a022aaecdbbf037779571d3",
-"main.dart.js": "0b9d6f050a58f23b21fb49f150cc86db",
+"main.dart.js": "cdfe916eeecad8aa9d38d245f5770b5d",
 "manifest.json": "337fbd5671357c8c166d74e98a8397da",
 "version.json": "882561a23e46efb349f16f4735e1e14a"};
 // The application shell files that are downloaded before a service worker can
