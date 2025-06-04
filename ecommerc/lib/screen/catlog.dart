@@ -44,82 +44,83 @@ class _CatalogState extends State<Catalog> {
         elevation: 0,
       ),
       body: Container(
-  decoration: BoxDecoration(
-    gradient: LinearGradient(
-      colors: [primaryColor.withOpacity(0.9), secondaryColor.withOpacity(0.9)],
-      begin: Alignment.topLeft,
-      end: Alignment.bottomRight,
-    ),
-  ),
-  padding: const EdgeInsets.all(12),
-  child: GridView.builder(
-    itemCount: electornicItem.length,
-    gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-      crossAxisCount: 2,
-      mainAxisSpacing: 15,
-      crossAxisSpacing: 15,
-      childAspectRatio: 3 / 4,
-    ),
-    itemBuilder: (context, index) {
-      var categoryName = electornicItem[index]["name"];
-      var selectedScreen = itemList[categoryName];
-
-      return GestureDetector(
-        onTap: () {
-          Navigator.push(
-            context,
-            MaterialPageRoute(builder: (context) => selectedScreen),
-          );
-        },
-        child: Container(
-          decoration: BoxDecoration(
-            color: Colors.white, // کارڈ کا رنگ سفید
-            borderRadius: BorderRadius.circular(20),
-            boxShadow: [
-              BoxShadow(
-                color: Colors.black26,
-                blurRadius: 6,
-                offset: const Offset(0, 4),
-              ),
+        decoration: BoxDecoration(
+          gradient: LinearGradient(
+            colors: [
+              primaryColor.withOpacity(0.9),
+              secondaryColor.withOpacity(0.9),
             ],
-          ),
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Expanded(
-                flex: 3,
-                child: Padding(
-                  padding: const EdgeInsets.all(16.0),
-                  child: Image.asset(
-                    electornicItem[index]["image"],
-                    fit: BoxFit.contain,
-                  ),
-                ),
-              ),
-              Expanded(
-                flex: 1,
-                child: Center(
-                  child: Text(
-                    categoryName,
-                    style: TextStyle(
-                      color: primaryColor,
-                      fontWeight: FontWeight.bold,
-                      fontSize: 18,
-                    ),
-                    textAlign: TextAlign.center,
-                  ),
-                ),
-              ),
-              const SizedBox(height: 12),
-            ],
+            begin: Alignment.topLeft,
+            end: Alignment.bottomRight,
           ),
         ),
-      );
-    },
-  ),
-),
+        padding: const EdgeInsets.all(12),
+        child: GridView.builder(
+          itemCount: electornicItem.length,
+          gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+            crossAxisCount: 2,
+            mainAxisSpacing: 15,
+            crossAxisSpacing: 15,
+            childAspectRatio: 3 / 4,
+          ),
+          itemBuilder: (context, index) {
+            var categoryName = electornicItem[index]["name"];
+            var selectedScreen = itemList[categoryName];
 
-
+            return GestureDetector(
+              onTap: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => selectedScreen),
+                );
+              },
+              child: Container(
+                decoration: BoxDecoration(
+                  color: Colors.white, // کارڈ کا رنگ سفید
+                  borderRadius: BorderRadius.circular(20),
+                  boxShadow: [
+                    BoxShadow(
+                      color: Colors.black26,
+                      blurRadius: 6,
+                      offset: const Offset(0, 4),
+                    ),
+                  ],
+                ),
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Expanded(
+                      flex: 3,
+                      child: Padding(
+                        padding: const EdgeInsets.all(16.0),
+                        child: Image.asset(
+                          electornicItem[index]["image"],
+                          fit: BoxFit.contain,
+                        ),
+                      ),
+                    ),
+                    Expanded(
+                      flex: 1,
+                      child: Center(
+                        child: Text(
+                          categoryName,
+                          style: TextStyle(
+                            color: primaryColor,
+                            fontWeight: FontWeight.bold,
+                            fontSize: 18,
+                          ),
+                          textAlign: TextAlign.center,
+                        ),
+                      ),
+                    ),
+                    const SizedBox(height: 12),
+                  ],
+                ),
+              ),
+            );
+          },
+        ),
+      ),
     );
   }
 }

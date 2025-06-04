@@ -2,7 +2,6 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:ecommerce/screen/profiledetail.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:google_fonts/google_fonts.dart';  
 
 class SignupScreen extends StatefulWidget {
   const SignupScreen({super.key});
@@ -41,10 +40,11 @@ class _SignupScreenState extends State<SignupScreen> {
     }
 
     try {
-      UserCredential userCredential = await _auth.createUserWithEmailAndPassword(
-        email: _emailController.text.trim(),
-        password: _passwordController.text.trim(),
-      );
+      UserCredential userCredential = await _auth
+          .createUserWithEmailAndPassword(
+            email: _emailController.text.trim(),
+            password: _passwordController.text.trim(),
+          );
 
       final uid = userCredential.user?.uid;
 
@@ -134,6 +134,7 @@ class _SignupScreenState extends State<SignupScreen> {
                     ),
                   ),
                   const SizedBox(height: 28),
+
                   TextField(
                     controller: _nameController,
                     decoration: InputDecoration(
@@ -141,53 +142,54 @@ class _SignupScreenState extends State<SignupScreen> {
                       filled: true,
                       fillColor: Colors.grey[100],
                       prefixIcon: const Icon(Icons.person_outline),
-                      enabledBorder: OutlineInputBorder(
+                      border: OutlineInputBorder(
                         borderRadius: BorderRadius.circular(20),
-                        borderSide: BorderSide(color: Colors.grey.shade400, width: 1),
-                      ),
-                      focusedBorder: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(20),
-                        borderSide: const BorderSide(color: Color(0xff71b280), width: 2),
+                        borderSide: BorderSide(
+                          color: Colors.grey.shade400,
+                          width: 1,
+                        ),
                       ),
                     ),
+                    keyboardType: TextInputType.name,
                   ),
+
                   const SizedBox(height: 18),
+
                   TextField(
                     controller: _emailController,
-                    keyboardType: TextInputType.emailAddress,
                     decoration: InputDecoration(
                       labelText: 'Email',
                       filled: true,
                       fillColor: Colors.grey[100],
                       prefixIcon: const Icon(Icons.email_outlined),
-                      enabledBorder: OutlineInputBorder(
+                      border: OutlineInputBorder(
                         borderRadius: BorderRadius.circular(20),
-                        borderSide: BorderSide(color: Colors.grey.shade400, width: 1),
-                      ),
-                      focusedBorder: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(20),
-                        borderSide: const BorderSide(color: Color(0xff71b280), width: 2),
+                        borderSide: BorderSide(
+                          color: Colors.grey.shade400,
+                          width: 1,
+                        ),
                       ),
                     ),
+                    keyboardType: TextInputType.emailAddress,
                   ),
                   const SizedBox(height: 18),
+
                   TextField(
                     controller: _contactNumber,
-                    keyboardType: TextInputType.phone,
                     decoration: InputDecoration(
                       labelText: 'Contact No',
                       filled: true,
                       fillColor: Colors.grey[100],
                       prefixIcon: const Icon(Icons.phone_outlined),
-                      enabledBorder: OutlineInputBorder(
+                      border: OutlineInputBorder(
                         borderRadius: BorderRadius.circular(20),
-                        borderSide: BorderSide(color: Colors.grey.shade400, width: 1),
-                      ),
-                      focusedBorder: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(20),
-                        borderSide: const BorderSide(color: Color(0xff71b280), width: 2),
+                        borderSide: BorderSide(
+                          color: Colors.grey.shade400,
+                          width: 1,
+                        ),
                       ),
                     ),
+                    keyboardType: TextInputType.number,
                   ),
                   const SizedBox(height: 18),
                   TextField(
@@ -198,15 +200,17 @@ class _SignupScreenState extends State<SignupScreen> {
                       filled: true,
                       fillColor: Colors.grey[100],
                       prefixIcon: const Icon(Icons.lock_outline),
-                      enabledBorder: OutlineInputBorder(
+                      border: OutlineInputBorder
+                                    
+                      (
                         borderRadius: BorderRadius.circular(20),
-                        borderSide: BorderSide(color: Colors.grey.shade400, width: 1),
-                      ),
-                      focusedBorder: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(20),
-                        borderSide: const BorderSide(color: Color(0xff71b280), width: 2),
+                        borderSide: BorderSide(
+                          color: Colors.grey.shade400,
+                          width: 1,
+                        ),
                       ),
                     ),
+                    keyboardType: TextInputType.visiblePassword,
                   ),
                   const SizedBox(height: 24),
                   if (_error != null)
@@ -218,28 +222,24 @@ class _SignupScreenState extends State<SignupScreen> {
                   _isLoading
                       ? const CircularProgressIndicator()
                       : SizedBox(
-                          width: double.infinity,
-                          child: ElevatedButton(
-                            onPressed: _signup,
-                            style: ElevatedButton.styleFrom(
-                              backgroundColor: const Color(0xff71b280),
-                              padding: const EdgeInsets.symmetric(vertical: 14),
-                              shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(30),
-                              ),
-                              elevation: 5,
-                              shadowColor: Colors.black45,
+                        width: double.infinity,
+                        child: ElevatedButton(
+                          onPressed: _signup,
+                          style: ElevatedButton.styleFrom(
+                            backgroundColor: const Color(0xff71b280),
+                            padding: const EdgeInsets.symmetric(vertical: 14),
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(30),
                             ),
-                            child: Text(
-                              'Sign Up',
-                              style: TextStyle(
-                                fontSize: 16,
-                                color: Colors.white,
-                                
-                              ),
-                            ),
+                            elevation: 5,
+                            shadowColor: Colors.black45,
+                          ),
+                          child: Text(
+                            'Sign Up',
+                            style: TextStyle(fontSize: 16, color: Colors.white),
                           ),
                         ),
+                      ),
                   const SizedBox(height: 18),
                   TextButton(
                     onPressed: () {
